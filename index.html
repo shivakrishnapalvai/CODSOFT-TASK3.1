@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="message" class="message"></div>
+    <div class="calculator">
+        <div class="display">
+            <input type="text" id="result" disabled>
+        </div>
+        <div class="buttons">
+            <button class="btn" onclick="clearScreen()">C</button>
+            <button class="btn" onclick="display('%')">%</button>
+            <button class="btn" onclick="display('/')">/</button>
+            <button class="btn" onclick="backspace()">⌫</button>
+            <button class="btn number" onclick="display('7')">7</button>
+            <button class="btn number" onclick="display('8')">8</button>
+            <button class="btn number" onclick="display('9')">9</button>
+            <button class="btn operator" onclick="setOperator('*')">*</button>
+            <button class="btn number" onclick="display('4')">4</button>
+            <button class="btn number" onclick="display('5')">5</button>
+            <button class="btn number" onclick="display('6')">6</button>
+            <button class="btn operator" onclick="setOperator('-')">-</button>
+            <button class="btn number" onclick="display('1')">1</button>
+            <button class="btn number" onclick="display('2')">2</button>
+            <button class="btn number" onclick="display('3')">3</button>
+            <button class="btn operator" onclick="setOperator('+')">+</button>
+            <button class="btn" onclick="display('.')">.</button>
+            <button class="btn number" onclick="display('0')">0</button>
+            <button class="btn" onclick="calculateSquare()">x²</button>
+            <button class="btn equals" onclick="calculate()">=</button>
+            <button class="btn" onclick="calculateSquareRoot()">√x</button>
+            <button class="btn" onclick="calculateReciprocal()">1/x</button>
+            <button class="btn" onclick="displayPi()">π</button>
+            <button class="btn" onclick="calculateCube()">x³</button>
+        </div>
+    </div>
+    <script>
+        const result = document.getElementById('result');
+        const message = document.getElementById('message');
+        
+        let expression = '';
+
+        function display(value) {
+            expression += value;
+            result.value = expression;
+        }
+
+        function setOperator(op) {
+            // Ensure no consecutive operators are entered
+            const lastChar = expression.slice(-1);
+            if (lastChar !== '+' && lastChar !== '-' && lastChar !== '*' && lastChar !== '/') {
+                expression += op;
+                result.value = expression;
+            }
+        }
+
+        function clearScreen() {
+            expression = '';
+            result.value = '';
+            showMessage('Screen Cleared');
+        }
+
+        function calculate() {
+            try {
+                const output = eval(expression); // Evaluate the expression
+                result.value = output;
+                expression = output.toString(); // Store the result for further calculations
+                showMessage('Final Result: ' + output);
+            } catch (e) {
+                result.value = 'Error';
+                showMessage('Error');
+            }
+        }
+
+        function backspace() {
+            expression = expression.slice(0, -1); // Remove the last character
+            result.value = expression;
+            showMessage('Deleted Character');
+        }
+
+        function calculateSquare() {
+            try {
+                const value = parseFloat(result.value);
+                const output = value ** 2;
+                result.value = output;
+                expression = output.toString();
+                showMessage('Final Result: ' + output);
+            } catch (e) {
+                result.value = 'Error';
+                showMessage('Error');
+            }
+        }
+
+        function calculateSquareRoot() {
+            try {
+                const value = parseFloat(result.value);
+                const output = Math.sqrt(value);
+                result.value = output;
+                expression = output.toString();
+                showMessage('Final Result: ' + output);
+            } catch (e) {
+                result.value = 'Error';
+                showMessage('Error');
+            }
+        }
+
+        function calculateReciprocal() {
+            try {
+                const value = parseFloat(result.value);
+                const output = 1 / value;
+                result.value = output;
+                expression = output.toString();
+                showMessage('Final Result: ' + output);
+            } catch (e) {
+                result.value = 'Error';
+                showMessage('Error');
+            }
+        }
+
+        function displayPi() {
+            const pi = Math.PI;
+            expression += pi;
+            result.value = expression;
+            showMessage('Final Result: ' + pi);
+        }
+
+        function calculateCube() {
+            try {
+                const value = parseFloat(result.value);
+                const output = value ** 3;
+                result.value = output;
+                expression = output.toString();
+                showMessage('Final Result: ' + output);
+            } catch (e) {
+                result.value = 'Error';
+                showMessage('Error');
+            }
+        }
+
+        function showMessage(msg) {
+            message.textContent = msg;
+            message.classList.add('show');
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
